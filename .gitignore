@@ -1,0 +1,18 @@
+# 忽略 Python 缓存
+__pycache__/
+*.pyc
+
+# 忽略数据集
+datasets/
+data/
+
+# 忽略训练日志和大型权重文件
+checkpoint/
+logs/
+*.pth
+*.npy
+*.mat
+
+# 忽略虚拟环境
+venv/
+.conda/
