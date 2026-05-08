@@ -40,7 +40,7 @@ class dwLUT(nn.Module):
         for i in range(self.meta['IN']):
             for o in range(self.meta['OUT']):
                 self.arr[f'i{i}o{o}'] = nn.Parameter(torch.from_numpy(arr[f'i{i}o{o}']).to(torch.int32), requires_grad=False)
-        self.w = nn.Parameter(torch.from_numpy(np.load(path+'.npy')), requires_grad=False)
+        # self.w = nn.Parameter(torch.from_numpy(np.load(path+'.npy')), requires_grad=False)
         self.steps = {}
         for info in self.meta["LUTs"]:
             self.steps[f'i{info["in"]}o{info["out"]}'] = info["step"]
@@ -85,7 +85,7 @@ class pwLUT(nn.Module):
         for i in range(self.meta['IN']):
             for o in range(self.meta['OUT']):
                 self.arr[f'i{i}o{o}'] = nn.Parameter(torch.from_numpy(arr[f'i{i}o{o}']).to(torch.int32), requires_grad=False)
-        self.w = nn.Parameter(torch.from_numpy(np.load(path+'.npy')), requires_grad=False).to(torch.int32)
+        # self.w = nn.Parameter(torch.from_numpy(np.load(path+'.npy')), requires_grad=False).to(torch.int32)
         self.steps = {}
         for info in self.meta["LUTs"]:
             self.steps[f'i{info["in"]}o{info["out"]}'] = info["step"]

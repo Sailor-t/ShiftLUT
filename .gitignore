@@ -11,6 +11,7 @@ checkpoint/
 logs/
 *.pth
 *.npy
+!**/offset.npy
 *.mat
 
 # 忽略虚拟环境
