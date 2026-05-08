@@ -11,8 +11,8 @@ LUT_path_root = os.path.join('LUT_test', 'LUTs')
 # scale, stacks, cnum, model_name, step, EPS = 1, 7, 16, 'ShiftLUT_sigma=15_int', 180000, 0.55 # 60KB
 # scale, stacks, cnum, model_name, step, EPS = 1, 7, 16, 'ShiftLUT_qf=10_dncnn_v3_int4', 128000, 0.62 # 60KB 29.12/28.96, 69KB 29.13/28.97
 # scale, stacks, msb_base, cnum, model_name, step, EPS = (4, 0, 6, 16, 'ShiftLUT_sr_s0_int', 194000, 0.50) # 24KB
-scale, stacks, msb_base, cnum, model_name, step, EPS = (4, 1, 6, 16, 'ShiftLUT_sr_s1_int', 195000, 0.45)
-# scale, stacks, msb_base, cnum, model_name, step, EPS = (4, 7, 6, 16, 'ShiftLUT_sr_s7_int', 189000, 0.38) # K_Max ~ 64
+# scale, stacks, msb_base, cnum, model_name, step, EPS = (4, 1, 6, 16, 'ShiftLUT_sr_s1_int', 195000, 0.45)
+scale, stacks, msb_base, cnum, model_name, step, EPS = (4, 7, 6, 16, 'ShiftLUT_sr_s7_int', 189000, 0.35) # K_Max ~ 64
 
 
 LUT_path = os.path.join(LUT_path_root, model_name)
@@ -72,7 +72,7 @@ def DW2LUT(m, input_tensor): # SCLUT and DWLUT
     out = Round.apply(LUTclip(k*input_tensor+b))
     out = out.permute(0, 2, 1, 3)
     out = out[..., 0]
-    return out # shape: [data_range, kernel_size, out_c]
+    return out.cpu().numpy().astype(np.int8) # shape: [data_range, kernel_size, out_c]
 
 def PW2LUT(m, input_tensor):
     assert isinstance(m, PointConv)
@@ -164,7 +164,6 @@ def Branch2LUT(branch, base, branch_name, stacks, sample_d):
         for i in range(stacks+1):
 
             res = DW2LUT(branch.dsnets[i*2], input_tensor_dw)
-            res = res.cpu().numpy()
             print(f"For {i} in {branch_name}, Resulting DWLUT size: ", res.shape)
             tot += save_LUT(LUT_path+f"/DW{i}_{branch_name}", res, sample_d[i*2])
 
