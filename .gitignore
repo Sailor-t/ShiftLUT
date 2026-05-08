@@ -9,7 +9,7 @@ data/
 # 忽略训练日志和大型权重文件
 checkpoint/
 logs/
-*.pth
+# *.pth
 *.npy
 !**/offset.npy
 *.mat
